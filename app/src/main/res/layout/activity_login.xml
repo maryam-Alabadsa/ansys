@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_light"
+    android:padding="@dimen/padding_activity"
+    tools:context=".activites.LoginActivity">
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/img_login"
+            android:layout_width="344dp"
+            android:layout_height="173dp"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitXY"
+            android:layout_marginTop="@dimen/margin_top_14"
+            app:srcCompat="@drawable/login" />
+
+
+        <TextView
+            android:id="@+id/login_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/img_login"
+            android:layout_marginTop="@dimen/margin_top_24"
+            android:layout_alignParentRight="true"
+            android:text="@string/login_name"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/text_size_36"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/email_name"
+            android:layout_width="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/login_name"
+            android:layout_marginTop="@dimen/margin_top_24"
+            android:text="@string/email"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ed_email"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/email_name"
+            android:layout_marginTop="@dimen/margin_top_14"
+            android:background="#FFFFFF"
+            android:textColorHint="@color/divider"
+
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <TextView
+            android:id="@+id/password_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ed_email"
+            android:layout_marginTop="@dimen/margin_top_14"
+            android:text="@string/password"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/text_size_14"
+            android:textStyle="bold" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/ed_password"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_below="@id/password_name"
+            android:layout_marginTop="@dimen/margin_top_14"
+            android:background="@color/white"
+            android:textColorHint="@color/primary_light"
+            app:errorEnabled="true"
+            app:passwordToggleEnabled="true"
+            app:passwordToggleTint="@color/colorPrimary">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_Password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <Button
+            android:id="@+id/btn_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ed_password"
+            android:layout_marginTop="@dimen/margin_top_14"
+            android:text="@string/login_name"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tv_login_with"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btn_login"
+            android:layout_alignEnd="@+id/btn_login"
+            android:layout_marginTop="@dimen/margin_top_14"
+            android:layout_marginEnd="7dp"
+            android:text="@string/login_with"
+            android:layout_alignParentRight="true"
+            android:textColor="@color/primary_text" />
+
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/btn_login"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="1dp"
+            android:layout_alignParentLeft="true"
+            android:layout_toStartOf="@id/tv_login_with"
+            android:background="@color/divider" />
+
+
+        <LinearLayout
+            android:id="@+id/li_login_with"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_below="@id/tv_login_with"
+            android:background="@color/primary_light">
+
+            <LinearLayout
+                android:layout_width="115dp"
+                android:layout_height="80dp"
+                android:layout_below="@id/tv_login_with"
+                android:layout_margin="8dp"
+
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="@dimen/margin_top_24">
+
+                <TextView
+                    android:id="@+id/btn_google"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/tv_login_with"
+                    android:background="@drawable/search" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="115dp"
+                android:layout_height="80dp"
+                android:layout_below="@id/tv_login_with"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+
+                android:padding="@dimen/margin_top_24">
+
+                <TextView
+                    android:id="@+id/btn_ios"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/tv_login_with"
+                    android:background="@drawable/apple" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="115dp"
+                android:layout_height="80dp"
+                android:layout_below="@id/tv_login_with"
+                android:layout_margin="8dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:gravity="center"
+                android:padding="@dimen/margin_top_24">
+
+                <TextView
+                    android:id="@+id/btn_twitter"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@id/tv_login_with"
+                    android:background="@drawable/twitter" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
+
+
+<!--    <LinearLayout-->
+<!--        android:id="@+id/linear"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/li_login_with"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:orientation="vertical">-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_Register"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:layout_marginTop="@dimen/margin_top_14"-->
+<!--            android:text="@string/Register_name"-->
+<!--            android:textColor="@color/primary_text"-->
+<!--            android:textStyle="bold" />-->
+
+<!--        <View-->
+<!--            android:layout_width="110dp"-->
+<!--            android:layout_height="2dp"-->
+<!--            android:layout_below="@id/tv_Register"-->
+<!--            android:layout_centerHorizontal="true"-->
+<!--            android:background="@color/colorPrimaryDark" />-->
+<!--    </LinearLayout>-->
+
+<!--    <LinearLayout-->
+
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_below="@+id/linear"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:orientation="vertical"-->
+<!--        android:textAlignment="center">-->
+
+<!--&lt;!&ndash;        <TextView&ndash;&gt;-->
+<!--&lt;!&ndash;            android:id="@+id/tv_Register_visitor"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_marginTop="@dimen/margin_top_14"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:text="@string/register_visitor"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:textColor="#FF0000"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:textStyle="bold" />&ndash;&gt;-->
+
+<!--&lt;!&ndash;        <View&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="70dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="2dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_below="@id/tv_Register"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_centerHorizontal="true"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_marginTop="-3dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:background="#ff0000" />&ndash;&gt;-->
+<!--    </LinearLayout>-->
+
+</RelativeLayout>

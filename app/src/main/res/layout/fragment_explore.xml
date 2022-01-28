@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_light"
+    tools:context=".fragments.ExploreFragment">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/view_toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_centerHorizontal="true"
+        android:background="@color/primary_light"
+        app:layout_collapseMode="pin"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorPrimary">
+
+        <RelativeLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/ic_launcher_background"
+                android:textSize="@dimen/text_size_24"
+                android:text="استكشف " />
+
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nested"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_toolbar2">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/primary_light"
+            android:padding="@dimen/padding_activity"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linear1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_show_all_new_books"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="20dp"
+                    android:fontFamily="@font/abu_dhabi"
+                    android:text="عرض الكل"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/abu_dhabi"
+                    android:text="الاحدث انتشارا"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_one_new"
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linear1"
+                android:layout_marginTop="@dimen/margin_top_14" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/linear2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rv_one_new"
+                android:layout_marginTop="@dimen/margin_top_24"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_show_all_most_listened"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:fontFamily="@font/abu_dhabi"
+                    android:text="عرض الكل"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv2"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+
+                    android:fontFamily="@font/abu_dhabi"
+                    android:text="الاكثر استماعاا"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_size_14"
+                    android:textStyle="bold" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_two_new"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/linear2"
+                android:layout_marginTop="@dimen/margin_top_14" />
+
+
+
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

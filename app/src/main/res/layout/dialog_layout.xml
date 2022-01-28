@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/margin_top_14"
+    android:paddingTop="16dp">
+
+    <LinearLayout
+        android:id="@+id/linear1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/man1"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/man1" />
+
+        <ImageView
+            android:id="@+id/man2"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/man2" />
+
+        <ImageView
+            android:id="@+id/man3"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/man3" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/linear1"
+        tools:layout_editor_absoluteX="14dp"
+        tools:layout_editor_absoluteY="14dp">
+
+        <ImageView
+            android:id="@+id/woman1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_marginTop="@dimen/margin_top_14"
+            android:src="@drawable/woman1"
+            />
+
+        <ImageView
+            android:id="@+id/woman2"
+            android:layout_weight="1"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="14dp"
+            android:src="@drawable/woman2"
+          />
+
+        <ImageView
+            android:id="@+id/woman3"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="14dp"
+            android:layout_weight="1"
+            android:src="@drawable/woman3"
+      />
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

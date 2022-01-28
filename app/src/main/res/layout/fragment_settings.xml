@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_light"
+    tools:context=".fragments.SettingsFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/view_toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_centerHorizontal="true"
+        android:background="@color/primary_light"
+        app:layout_collapseMode="pin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorPrimary">
+
+        <RelativeLayout
+            android:id="@+id/layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="الاعدادات "
+                android:textColor="@color/ic_launcher_background"
+                android:textSize="@dimen/text_size_24" />
+
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_toolbar2">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <View
+                android:id="@+id/view3"
+                android:layout_width="360dp"
+                android:layout_height="170dp"
+                android:layout_marginTop="84dp"
+                android:background="@color/colorAccent"
+                android:backgroundTint="@color/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.487"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/user_img"
+                android:layout_width="170dp"
+                android:layout_height="210dp"
+                android:layout_marginTop="90dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/userimg"
+                app:layout_constraintBottom_toBottomOf="@id/view3"
+                app:layout_constraintRight_toRightOf="@id/tv_fav"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/user_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="90dp"
+                android:text="مريم محمد العبادسة"
+                android:textColor="@color/white"
+                android:textSize="25dp"
+                app:layout_constraintEnd_toEndOf="@id/user_email"
+                app:layout_constraintStart_toStartOf="@+id/user_email"
+                app:layout_constraintTop_toTopOf="@id/view3" />
+
+            <TextView
+                android:id="@+id/user_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="maryamalabadsa@gmail.com"
+                android:textColor="@color/primary_text"
+                android:textSize="14dp"
+                app:layout_constraintLeft_toLeftOf="@id/view3"
+                app:layout_constraintRight_toLeftOf="@id/user_img"
+                app:layout_constraintTop_toBottomOf="@id/user_name" />
+
+            <TextView
+                android:id="@+id/tv_fav"
+                android:layout_width="360dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="14dp"
+                android:background="@color/white"
+                android:paddingTop="@dimen/margin_top_24"
+                android:paddingRight="@dimen/margin_top_24"
+                android:text="المفضلة"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/text_size_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.487"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="80dp"
+                android:background="@color/colorAccent"
+                app:layout_constraintRight_toRightOf="@+id/tv_fav"
+                app:layout_constraintTop_toTopOf="@id/tv_fav" />
+
+            <TextView
+                android:id="@+id/tv_abut_us"
+                android:layout_width="360dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="14dp"
+                android:background="@color/white"
+                android:paddingTop="@dimen/margin_top_24"
+                android:paddingRight="@dimen/margin_top_24"
+                android:text="حول التطبيق "
+                android:textColor="@color/icons"
+                android:textSize="@dimen/text_size_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.487"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_fav" />
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="80dp"
+                android:background="#00BCD4"
+                app:layout_constraintRight_toRightOf="@+id/tv_abut_us"
+                app:layout_constraintTop_toTopOf="@id/tv_abut_us" />
+
+            <TextView
+                android:id="@+id/tv_terms_conditions"
+                android:layout_width="360dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="14dp"
+                android:background="@color/white"
+                android:paddingTop="@dimen/margin_top_24"
+                android:paddingRight="@dimen/margin_top_24"
+                android:text="الشروط و الأحكام "
+                android:textColor="@color/icons"
+                android:textSize="@dimen/text_size_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.487"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_abut_us" />
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="80dp"
+                android:background="#8BC34A"
+                app:layout_constraintRight_toRightOf="@+id/tv_terms_conditions"
+                app:layout_constraintTop_toTopOf="@id/tv_terms_conditions" />
+
+            <TextView
+                android:id="@+id/tv_log_out"
+                android:layout_width="360dp"
+                android:layout_height="80dp"
+                android:layout_marginTop="14dp"
+                android:background="@color/white"
+                android:paddingTop="@dimen/margin_top_24"
+                android:paddingRight="@dimen/margin_top_24"
+                android:text="تسجيل خروج"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/text_size_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.487"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_terms_conditions" />
+
+            <View
+                android:layout_width="6dp"
+                android:layout_height="80dp"
+                android:background="#FF9800"
+                app:layout_constraintRight_toRightOf="@+id/tv_log_out"
+                app:layout_constraintTop_toTopOf="@id/tv_log_out" />
+
+            <TextView
+                android:id="@+id/tv_sign_in"
+                android:layout_width="360dp"
+                android:layout_height="80dp"
+                android:background="@color/white"
+                android:paddingTop="@dimen/margin_top_24"
+                android:paddingRight="@dimen/margin_top_24"
+                android:text="تسجيل دخول"
+                android:textColor="@color/icons"
+                android:textSize="@dimen/text_size_24"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.487"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/tv_log_out" />
+
+            <View
+                android:id="@+id/view"
+                android:layout_width="6dp"
+                android:layout_height="80dp"
+                android:background="#F44336"
+                app:layout_constraintRight_toRightOf="@+id/tv_log_out"
+                app:layout_constraintTop_toTopOf="@id/tv_log_out" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

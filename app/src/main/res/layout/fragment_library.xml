@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.LibraryFragment">
+
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/view_toolbar2"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_centerHorizontal="true"
+        android:background="@color/primary_light"
+        app:layout_collapseMode="pin"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="@color/colorPrimary">
+
+        <RelativeLayout
+            android:id="@+id/layout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="مكتبتي "
+                android:textColor="@color/ic_launcher_background"
+                android:textSize="@dimen/text_size_24" />
+
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+
+    <RelativeLayout
+        android:id="@+id/layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_toolbar2">
+
+        <include
+            android:id="@+id/include"
+            layout="@layout/content_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/conteiner2"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/layout"/>
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_marginBottom="150dp"
+        android:src="@drawable/book_stack"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_toolbar2" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="16dp"
+        android:visibility="invisible"
+        android:text="يرجى تسجيل الدخول اولا لتتمكن من استخدام مميوات المكتبة "
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textColor="@color/colorPrimaryDark"
+        android:textSize="18sp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView5" />
+
+    <Button
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="16dp"
+        android:background="@drawable/rounded"
+        android:fontFamily="@font/abu_dhabi"
+        android:text="تسجيل الدخول"
+        android:textAllCaps="false"
+        android:textColor="#fff"
+        android:textSize="17sp"
+        android:visibility="invisible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView2"
+        tools:ignore="Suspicious0dp" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

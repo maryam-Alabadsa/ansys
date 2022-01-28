@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "611630223057",
+    "project_id": "ansys-c19a7",
+    "storage_bucket": "ansys-c19a7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:611630223057:android:814c68b7339f6374f8bff0",
+        "android_client_info": {
+          "package_name": "com.example.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "611630223057-8mrv7amcehkuljrkpltdchddh0mk9vcs.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa8X5W4b4Pk0w3idxDC45IIYjMI91Dfi8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "611630223057-8mrv7amcehkuljrkpltdchddh0mk9vcs.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/primary_light"
+    tools:context=".fragments.BookDesFragment">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="250dp"
+                android:layout_height="300dp"
+                android:scaleType="fitXY"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/whatsapp_image_2021_10_22_at_7_32_58_pm" />
+
+            <TextView
+                android:id="@+id/tv_name_book_info"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_top_24"
+                android:fontFamily="@font/abu_dhabi"
+                android:text="TextView"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/margin_top_24"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btn_fav_book"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="14dp"
+                android:backgroundTint="#00000000"
+                android:scaleType="fitXY"
+                android:src="@drawable/heart"
+                android:tint="@color/white"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/btn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="18dp"
+                android:layout_marginRight="24dp"
+                android:background="@color/primary_light"
+                android:scaleType="fitXY"
+                android:src="@drawable/ic_baseline_format_list_bulleted_24"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:id="@+id/img_book"
+                android:layout_width="171dp"
+                android:layout_height="220dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="116dp"
+                android:scaleType="fitXY"
+                app:layout_constraintHorizontal_bias="0.65"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <TextView
+                android:id="@+id/text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="70dp"
+                android:text="اسم الراوي"
+                android:textColor="@color/ic_launcher_background"
+                android:textSize="24sp"
+                app:layout_constraintBottom_toBottomOf="@id/imageView"
+                app:layout_constraintRight_toLeftOf="@+id/img_book" />
+
+            <TextView
+                android:id="@+id/tv_name_writer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="14dp"
+                android:layout_marginBottom="20dp"
+                android:text="اسم الراوي"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="@id/imageView"
+                app:layout_constraintRight_toLeftOf="@+id/img_book" />
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/linear_about"
+                        android:layout_width="350dp"
+                        android:layout_height="250dp"
+                        android:layout_marginTop="@dimen/margin_top_24"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+
+                        app:layout_constraintVertical_bias="0.169">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:layout_margin="@dimen/margin_top_24"
+                            android:fontFamily="@font/abu_dhabi"
+                            android:text="حول الكتاب"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="@dimen/margin_top_24"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <View
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_margin="5dp"
+                                android:layout_marginTop="@dimen/margin_top_14"
+                                android:background="@color/colorPrimary" />
+
+                            <View
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_margin="5dp"
+                                android:layout_marginTop="@dimen/margin_top_14"
+                                android:background="@color/colorPrimary" />
+
+                            <View
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_margin="5dp"
+                                android:layout_marginTop="@dimen/margin_top_14"
+                                android:background="@color/colorPrimary" />
+
+                            <View
+                                android:layout_width="10dp"
+                                android:layout_height="10dp"
+                                android:layout_margin="5dp"
+                                android:layout_marginTop="@dimen/margin_top_14"
+                                android:background="@color/colorPrimary" />
+
+                            <View
+                                android:layout_width="wrap_content"
+                                android:layout_height="5dp"
+                                android:layout_margin="5dp"
+                                android:layout_marginTop="@dimen/margin_top_14"
+                                android:layout_weight="1"
+                                android:background="@color/primary_light" />
+                        </LinearLayout>
+
+                        <androidx.core.widget.NestedScrollView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <androidx.constraintlayout.widget.ConstraintLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+
+                                <TextView
+                                    android:id="@+id/tv_book_des"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent" />
+
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.core.widget.NestedScrollView>
+
+                    </LinearLayout>
+
+                    <View
+                        android:id="@+id/view4"
+                        android:layout_width="120dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="34dp"
+                        android:background="@color/colorPrimary"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linear_about" />
+
+
+                    <ImageView
+                        android:id="@+id/btn_run_media"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="34dp"
+                        android:padding="8dp"
+                        android:scaleType="fitXY"
+                        android:tint="@color/white"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/linear_about"
+                        app:srcCompat="@drawable/end" />
+
+                    <ImageView
+                        android:id="@+id/btn_next"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="34dp"
+                        android:layout_marginTop="34dp"
+                        android:src="@drawable/end"
+                        app:layout_constraintLeft_toRightOf="@+id/view4"
+                        app:layout_constraintTop_toBottomOf="@id/linear_about" />
+
+                    <ImageView
+                        android:id="@+id/btn_pre"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="34dp"
+                        android:layout_marginRight="34dp"
+                        android:src="@drawable/start"
+                        app:layout_constraintRight_toLeftOf="@+id/view4"
+                        app:layout_constraintTop_toBottomOf="@+id/linear_about" />
+
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
