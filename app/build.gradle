@@ -77,6 +77,16 @@ dependencies {
 
 //    implementation 'com.google.android.exoplayer:exoplayer:2.7.3'
     implementation 'com.google.android.exoplayer:exoplayer:2.11.6'
+//like Button
+    compile 'com.github.jd-alexander:LikeButton:0.2.3'
+    //compile 'com.github.jd-alexander:LikeButton:0.1.6'
+    compile 'com.mikepenz:iconics-core:2.9.1@aar'
+    compile 'com.mikepenz:community-material-typeface:1.3.41.1@aar'
+
+    implementation 'com.jakewharton:butterknife:10.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
+    //activity Animation 
+    implementation 'com.github.mohammadatif:Animatoo:master'
 
 
 }

@@ -35,10 +35,7 @@ import java.util.ArrayList;
 
 public class SplashActivity extends BaseActivity {
 
-    private void goToNext() {
-        startActivity(new Intent(getApplicationContext(), MainActivity.class));
-        finish();
-    }
+
 
     private void goToLogin() {
         startActivity(new Intent(getApplicationContext(), LoginActivity.class));
@@ -61,28 +58,6 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
-    public void getAll() {
-        ArrayList<Books> list = new ArrayList<>();
-
-        CollectionReference questionRef = firebaseFirestore.collection("Books");
-        questionRef
-
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-                if (!queryDocumentSnapshots.isEmpty()) {
-                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
-                        list.add(snapshot.toObject(Books.class));
-                        Constants.LIST.add(new ConstantsList(snapshot.getReference().getId(), snapshot.toObject(Books.class)));
-                    }
-                }
-                getLibrary();
-                goToNext();
-
-            }
-        });
-    }
 
     public void getLibrary() {
         ArrayList<Library> list = new ArrayList<>();

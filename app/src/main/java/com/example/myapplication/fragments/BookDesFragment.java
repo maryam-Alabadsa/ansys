@@ -8,6 +8,7 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
@@ -60,6 +61,11 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.like.LikeButton;
+import com.like.OnAnimationEndListener;
+import com.like.OnLikeListener;
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -83,7 +89,8 @@ import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 
-public class BookDesFragment extends BaseFragment {
+public class BookDesFragment extends BaseFragment implements OnLikeListener,
+        OnAnimationEndListener {
 
     private static final String ARG_PARAM1 = "id";
     private static final String ARG_PARAM2 = "cat.";
@@ -128,9 +135,14 @@ public class BookDesFragment extends BaseFragment {
                              Bundle savedInstanceState) {
         binding = FragmentBookDesBinding.inflate(inflater, container, false);
         View view = binding.getRoot();
-
+        binding.heartButton.setOnLikeListener(this);
+        binding.heartButton.setOnAnimationEndListener(this);
+        Log.e("first id", id + "");
+        if (currentUser==null||(currentUser!=null&&currentUser.getEmail()==null)) {
+            binding.btn.setVisibility(View.INVISIBLE);
+        }
         setData(book);
-//        changeFavColor();
+//        changeFavColor(id);
 
 //        Toast.makeText(getActivity(), "Constants.LIST.size() = " + list.size(), Toast.LENGTH_SHORT).show();
         binding.btnNext.setOnClickListener(new View.OnClickListener() {
@@ -139,7 +151,7 @@ public class BookDesFragment extends BaseFragment {
                 if (cat != null) {
                     Next();
                     setData(book);
-//                    changeFavColor();
+//                    changeFavColor(id);
 
                 }
             }
@@ -164,20 +176,33 @@ public class BookDesFragment extends BaseFragment {
             @Override
             public void onClick(View view) {
 //                Toast.makeText(getActivity(), list.get(id).getId()+"", Toast.LENGTH_SHORT).show();
-                EventBus.getDefault().post(new MyEventBus(Constants.FROM_BOOK_DES_TO_EXO_PLAYER, id));
+                EventBus.getDefault().post(new MyEventBus(Constants.FROM_BOOK_DES_TO_EXO_PLAYER, id,0));
             }
         });
 
         favoriteArray = new ArrayList<>();
 
-        binding.btnFavBook.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                createFavs();
-            }
-        });
         return view;
     }
+
+
+    @Override
+    public void liked(LikeButton likeButton) {
+        addToFavs();
+        Toast.makeText(getActivity(), "Liked!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void unLiked(LikeButton likeButton) {
+        deleteFromFavs();
+        Toast.makeText(getActivity(), "Disliked!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAnimationEnd(LikeButton likeButton) {
+        Log.d("tag", "Animation End for %s" + likeButton);
+    }
+
 
     private void Next() {
 
@@ -226,6 +251,7 @@ public class BookDesFragment extends BaseFragment {
         binding.tvNameBookInfo.setText(book.getName_book());
         binding.tvBookDes.setText(book.getDes());
         Glide.with(getActivity()).load(book.getImg_uri()).into(binding.imgBook);
+        changeFavColor(id);
     }
 
 
@@ -292,23 +318,51 @@ public class BookDesFragment extends BaseFragment {
     }
 
     private void addToFavs() {
-        favoriteArray = favorite.getList();
-        favoriteArray.add(new FavoriteArray(id));
-        Favorite favorite = new Favorite(currentUser.getUid(), favoriteArray);
-        firebaseFirestore.collection("fav").document(favorite.getUserId()).set(favorite);
-        Toast.makeText(getActivity(), "تمت الاضافة الى المفضلة ", Toast.LENGTH_SHORT).show();
+
+        FavoriteArray favoriteArray = new FavoriteArray(id);
+        firebaseFirestore.collection("Fav").document(currentUser.getUid())
+                .collection("myBooks").document(id).set(favoriteArray)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                        } else {
+                            task.getException().printStackTrace();
+                        }
+                    }
+                });
+
+//        favoriteArray = favorite.getList();
+//        favoriteArray.add(new FavoriteArray(id));
+//        Favorite favorite = new Favorite(currentUser.getUid(), favoriteArray);
+//        firebaseFirestore.collection("fav").document(favorite.getUserId()).set(favorite);
+//        Toast.makeText(getActivity(), "تمت الاضافة الى المفضلة ", Toast.LENGTH_SHORT).show();
     }
 
     private void deleteFromFavs() {
-        for (int i = 0; i < favoriteArray.size(); i++) {
-            if (favoriteArray.get(i).getBookId().equals(id)) {
-                favoriteArray.remove(i);
-                Favorite favorite = new Favorite(currentUser.getUid(), favoriteArray);
-                firebaseFirestore.collection("fav").document(favorite.getUserId()).set(favorite);
-                Toast.makeText(getActivity(), "تم الازالة من المفضلة ", Toast.LENGTH_SHORT).show();
-                break;
-            }
-        }
+
+        FavoriteArray favoriteArray = new FavoriteArray(id);
+        firebaseFirestore.collection("Fav").document(currentUser.getUid())
+                .collection("myBooks").document(id).delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                        } else {
+                            task.getException().printStackTrace();
+                        }
+                    }
+                });
+
+//        for (int i = 0; i < favoriteArray.size(); i++) {
+//            if (favoriteArray.get(i).getBookId().equals(id)) {
+//                favoriteArray.remove(i);
+//                Favorite favorite = new Favorite(currentUser.getUid(), favoriteArray);
+//                firebaseFirestore.collection("fav").document(favorite.getUserId()).set(favorite);
+//                Toast.makeText(getActivity(), "تم الازالة من المفضلة ", Toast.LENGTH_SHORT).show();
+//                break;
+//            }
+//        }
     }
 
 
@@ -322,27 +376,29 @@ public class BookDesFragment extends BaseFragment {
         return false;
     }
 
-    private void changeFavColor() {
+    private void changeFavColor(String id) {
 
-        CollectionReference questionRef = firebaseFirestore.collection("fav");
-        questionRef
-                .whereEqualTo("userId", currentUser.getUid())
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                if (!queryDocumentSnapshots.isEmpty()) {
-                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
-                        for (int i = 0; i < snapshot.toObject(Favorite.class).getList().size(); i++) {
-                            if (snapshot.toObject(Favorite.class).getList().get(i).getBookId().equals(id)) {
-                                binding.btnFavBook.setColorFilter(ContextCompat.getColor(getActivity(), R.color.colorPrimary));
-                            }
-                        }
+        firebaseFirestore.collection("Fav").document(currentUser.getUid()).collection("myBooks")
+                .whereEqualTo("bookId", id)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        //shown when the button is liked!
+                        binding.heartButton.setLiked(true);
+                        binding.heartButton.setUnlikeDrawable(new BitmapDrawable(getResources(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_heart).colorRes(android.R.color.holo_red_light).sizeDp(25).toBitmap()));
+                        Toast.makeText(getActivity(), "color", Toast.LENGTH_SHORT).show();
+                        Log.e("Liked", id + "");
                     }
-                } else
-                    binding.btnFavBook.setColorFilter(Color.argb(255, 255, 255, 255));
-            }
+                });
+        binding.heartButton.setLiked(false);
 
-        });
+        Toast.makeText(getActivity(), "66", Toast.LENGTH_SHORT).show();
+
+        //shown when the button is in its default state or when unLiked.
+        binding.heartButton.setUnlikeDrawable(new BitmapDrawable(getResources(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_heart).colorRes(android.R.color.white).sizeDp(25).toBitmap()));
+
+
     }
 
     @SuppressLint("RestrictedApi")
@@ -550,7 +606,6 @@ public class BookDesFragment extends BaseFragment {
             progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
             progressDialog.setIndeterminate(false);
             progressDialog.show();
-
         }
 
         @Override
@@ -601,27 +656,28 @@ public class BookDesFragment extends BaseFragment {
             return "Done";
         }
     }
-        String formattedDate;
 
-        private void downloadMedia() {
+    String formattedDate;
 
-            Date c = Calendar.getInstance().getTime();
-            System.out.println("Current time => " + c);
-            SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
-            formattedDate = df.format(c);
-            LoadedBooks loadedBooks = new LoadedBooks(id, formattedDate);
-            firebaseFirestore.collection("library").document(currentUser.getUid())
-                    .collection("myloadedBooks").document(id).set(loadedBooks)
-                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            if (task.isSuccessful()) {
-                            } else {
-                                task.getException().printStackTrace();
-                            }
+    private void downloadMedia() {
+
+        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time => " + c);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss", Locale.getDefault());
+        formattedDate = df.format(c);
+        LoadedBooks loadedBooks = new LoadedBooks(id, formattedDate);
+        firebaseFirestore.collection("library").document(currentUser.getUid())
+                .collection("myloadedBooks").document(id).set(loadedBooks)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                        } else {
+                            task.getException().printStackTrace();
                         }
-                    })
-            ;
+                    }
+                })
+        ;
 //        loadedBooks = new ArrayList<>();
 //
 //        CollectionReference questionRef = firebaseFirestore.collection("Library");
@@ -657,7 +713,7 @@ public class BookDesFragment extends BaseFragment {
 //
 //            }
 //        });
-        }
-
-
     }
+
+
+}

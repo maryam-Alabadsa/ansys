@@ -90,8 +90,7 @@ public class LoginActivity extends BaseActivity {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("signIn", "signInWithEmail:success");
                                 Toast.makeText(LoginActivity.this, "signInWithEmail:success", Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(LoginActivity.this, SplashActivity.class);
-                                startActivity(intent);
+                                getAll();
                                 savePrefsData();
                             } else {
                                 binding.progressBar.setVisibility(View.GONE);
@@ -101,7 +100,7 @@ public class LoginActivity extends BaseActivity {
                                 Log.e("signIn", "signInWithEmail:failure" + binding.etEmail.getText().toString());
                                 Toast.makeText(LoginActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
-                                Toast.makeText(LoginActivity.this, ""+task.getException(),
+                                Toast.makeText(LoginActivity.this, "" + task.getException(),
                                         Toast.LENGTH_SHORT).show();
                             }
                         }

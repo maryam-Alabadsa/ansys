@@ -13,16 +13,19 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".exoplayer.ExoPlayerActivity"></activity>
         <activity
             android:name=".activites.TermsConditionsActivity"
-            android:screenOrientation="locked"></activity>
-
-
+            android:screenOrientation="locked" />
         <activity
             android:name=".activites.SplashActivity"
-            android:screenOrientation="locked"/>
-        <activity android:name=".activites.RegisterActivity" android:screenOrientation="locked" />
-        <activity android:name=".on.bording.IntroActivity" android:screenOrientation="locked">
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".activites.RegisterActivity"
+            android:screenOrientation="locked" />
+        <activity
+            android:name=".on.bording.IntroActivity"
+            android:screenOrientation="locked">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,10 +34,10 @@
         </activity>
         <activity
             android:name=".activites.LoginActivity"
-            android:screenOrientation="locked"></activity>
+            android:screenOrientation="locked" />
         <activity
             android:name=".activites.MainActivity"
-            android:screenOrientation="locked"></activity>
+            android:screenOrientation="locked" />
     </application>
 
 </manifest>

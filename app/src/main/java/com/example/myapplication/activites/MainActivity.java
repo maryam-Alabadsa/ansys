@@ -13,9 +13,11 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.example.myapplication.R;
 import com.example.myapplication.constants.Constants;
 import com.example.myapplication.databinding.ActivityMainBinding;
+import com.example.myapplication.exoplayer.ExoPlayerActivity;
 import com.example.myapplication.exoplayer.ExoPlayerFragment;
 import com.example.myapplication.fragments.AboutUsFragment;
 import com.example.myapplication.fragments.BookDesFragment;
@@ -96,7 +98,12 @@ public class MainActivity extends BaseActivity {
         } else if (event.getType() == Constants.FROM_CHANGE_PASSWORD_TO_USER) {
             openFragment(UserFragment.newInstance("", ""));
         } else if (event.getType() == Constants.FROM_BOOK_DES_TO_EXO_PLAYER) {
-            openFragment(ExoPlayerFragment.newInstance(event.getTitle()));
+//            openFragment(ExoPlayerFragment.newInstance(event.getTitle(),event.getDuration()));
+            Intent intent=new Intent(this, ExoPlayerActivity.class);
+            intent.putExtra(Constants.INTENT_KEY_ID,event.getTitle());
+            intent.putExtra(Constants.INTENT_KEY_DURATION,event.getDuration());
+            startActivity(intent);
+            Animatoo.animateSlideUp(this);
         } else if (event.getType() == Constants.FROM_SETTINGS_TO_FAV) {
             openFragment(FavBookFragment.newInstance("", ""));
         } else if (event.getType() == Constants.FROM_SETTINGS_TO_ABOUT_US) {

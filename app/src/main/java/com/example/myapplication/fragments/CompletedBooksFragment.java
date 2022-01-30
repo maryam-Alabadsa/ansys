@@ -87,7 +87,7 @@ public class CompletedBooksFragment extends BaseFragment {
         adapter = new CompletedBooksِAdapter(getActivity(), new BookDesInterface() {
             @Override
             public void layout(String id, Boolean Cat) {
-                EventBus.getDefault().post(new MyEventBus(Constants.FROM_ADAPTER_TO_BOOK_DES, id, Cat));
+//                EventBus.getDefault().post(new MyEventBus(Constants.FROM_BOOK_DES_TO_EXO_PLAYER, id,0));
             }
         });
         binding.rv.setAdapter(adapter);

@@ -22,6 +22,8 @@ public class Constants {
             IMG_MAN1 = 1, IMG_MAN2 = 2, IMG_MAN3 = 3, IMG_WOMAN1 = 4, IMG_WOMAN2 = 5, IMG_WOMAN3 = 6;
     public static final String IMG_KEY = "IMG KEY";
     public static final String INTENT_KEY = "INTENT_KEY";
+    public static final String INTENT_KEY_ID = "INTENT_KEY_ID";
+    public static final String INTENT_KEY_DURATION = "INTENT_KEY_DURATION";
     public static final int FROM_NEW_BOOKS_TO_BOOK_DES = 600;
     public static final int FROM_MOST_LISTENED_BOOKS_TO_BOOK_DES = 700;
     public static final int FROM_SETTINGS_TO_ABOUT_US = 900000;

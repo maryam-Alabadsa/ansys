@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.example.myapplication.constants.Constants;
 import com.example.myapplication.databinding.LibraryItemLayoutBinding;
 import com.example.myapplication.listener.BookDesInterface;
+import com.example.myapplication.listener.BookUnfinishedInterface;
 import com.example.myapplication.models.ConstantsList;
 import com.example.myapplication.models.Library;
 import com.example.myapplication.models.UnfinishedBooks;
@@ -23,11 +23,11 @@ import java.util.concurrent.TimeUnit;
 public class UnfinishedBooksAdapter extends RecyclerView.Adapter<UnfinishedBooksAdapter.MyViewHolder> {
     Context context;
     ArrayList<Library> list = new ArrayList<>();
-    BookDesInterface bookDesInterface;
+    BookUnfinishedInterface bookUnfinishedInterface;
 
-    public UnfinishedBooksAdapter(Context context, BookDesInterface bookDesInterface) {
+    public UnfinishedBooksAdapter(Context context, BookUnfinishedInterface bookUnfinishedInterface) {
         this.context = context;
-        this.bookDesInterface = bookDesInterface;
+        this.bookUnfinishedInterface = bookUnfinishedInterface;
     }
 
     public ArrayList<Library> getList() {
@@ -53,7 +53,6 @@ public class UnfinishedBooksAdapter extends RecyclerView.Adapter<UnfinishedBooks
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Toast.makeText(context, "onCreateViewHolder", Toast.LENGTH_SHORT).show();
         LibraryItemLayoutBinding binding = LibraryItemLayoutBinding.inflate(LayoutInflater
                         .from(parent.getContext())
                 , parent, false);
@@ -62,7 +61,6 @@ public class UnfinishedBooksAdapter extends RecyclerView.Adapter<UnfinishedBooks
 
     //    @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        Toast.makeText(context, "adapter", Toast.LENGTH_SHORT).show();
         for (int i = 0; i < Constants.LIST.size(); i++) {
             if (Constants.LIST.get(i).getId().equals(list.get(position).getBookId())) {
                 holder.binding.tvBookName.setText(Constants.LIST.get(i).getBooks().getName_book());
@@ -79,8 +77,8 @@ public class UnfinishedBooksAdapter extends RecyclerView.Adapter<UnfinishedBooks
         holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (bookDesInterface != null) {
-                    bookDesInterface.layout(list.get(position).getBookId(), null);
+                if (bookUnfinishedInterface != null) {
+                    bookUnfinishedInterface.layout(list.get(position).getBookId(), list.get(position).getDuration());
                 }
             }
         });

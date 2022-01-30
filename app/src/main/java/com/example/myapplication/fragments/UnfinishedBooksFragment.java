@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.myapplication.R;
 import com.example.myapplication.adapter.CompletedBooksِAdapter;
@@ -20,6 +19,7 @@ import com.example.myapplication.constants.Constants;
 import com.example.myapplication.databinding.FragmentCompletedBooksBinding;
 import com.example.myapplication.databinding.FragmentUnfinishedBooksBinding;
 import com.example.myapplication.listener.BookDesInterface;
+import com.example.myapplication.listener.BookUnfinishedInterface;
 import com.example.myapplication.models.Library;
 import com.example.myapplication.models.MyEventBus;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -85,10 +85,10 @@ public class UnfinishedBooksFragment extends BaseFragment {
 
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
         binding.rv.setLayoutManager(layoutManager);
-        adapter = new UnfinishedBooksAdapter(getActivity(), new BookDesInterface() {
+        adapter = new UnfinishedBooksAdapter(getActivity(), new BookUnfinishedInterface() {
             @Override
-            public void layout(String id, Boolean Cat) {
-                EventBus.getDefault().post(new MyEventBus(Constants.FROM_ADAPTER_TO_BOOK_DES, id, Cat));
+            public void layout(String id, long duration) {
+                EventBus.getDefault().post(new MyEventBus(Constants.FROM_BOOK_DES_TO_EXO_PLAYER, id,duration));
             }
         });
 

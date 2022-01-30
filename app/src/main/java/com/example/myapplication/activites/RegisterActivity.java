@@ -71,8 +71,7 @@ public class RegisterActivity extends BaseActivity {
                                 currentUser = mAuth.getCurrentUser();
                                 Toast.makeText(RegisterActivity.this, currentUser.getEmail() + "", Toast.LENGTH_SHORT).show();
                                 updateProfile();
-                                Intent intent = new Intent(RegisterActivity.this, SplashActivity.class);
-                                startActivity(intent);
+                                getAll();
                             } else {
                                 binding.progressBar.setVisibility(View.GONE);
 

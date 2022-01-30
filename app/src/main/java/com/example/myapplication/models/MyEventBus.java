@@ -8,6 +8,7 @@ public class MyEventBus {
     Boolean Cat;
     int id;
     int id_from_any_adapter;
+    long duration;
 
     public MyEventBus(int type, String title, Boolean cat) {
         this.type = type;
@@ -15,13 +16,12 @@ public class MyEventBus {
         Cat = cat;
     }
 
-    public Boolean getCat() {
-        return Cat;
+    public MyEventBus(int type, String title, long duration) {
+        this.type = type;
+        this.title = title;
+        this.duration = duration;
     }
 
-    public void setCat(Boolean cat) {
-        Cat = cat;
-    }
 
     public MyEventBus(int type, String title, int id, int id_from_any_adapter) {
         this.type = type;
@@ -42,6 +42,13 @@ public class MyEventBus {
         this.title = title;
     }
 
+    public Boolean getCat() {
+        return Cat;
+    }
+
+    public void setCat(Boolean cat) {
+        Cat = cat;
+    }
 
     public int getId() {
         return id;
@@ -81,5 +88,13 @@ public class MyEventBus {
 
     public void setType(int type) {
         this.type = type;
+    }
+
+    public long getDuration() {
+        return duration;
+    }
+
+    public void setDuration(long duration) {
+        this.duration = duration;
     }
 }
