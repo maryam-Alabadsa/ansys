@@ -1,9 +1,13 @@
 package com.example.myapplication.fragments;
 
 import android.annotation.SuppressLint;
+import android.app.DownloadManager;
 import android.app.ProgressDialog;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -410,7 +414,8 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
             public boolean onMenuItemClick(MenuItem item) {
                 if (item.getItemId() == R.id.Download) {
                     if (currentUser != null) {
-                        new DownloadFile().execute();
+                        downloadAudio();
+                        //new DownloadFile().execute();
                     } else
                         Toast.makeText(activity, "لتتمكن من تنزيل الكتاب ع جهازك يجب تسجيل دخول ", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.Share) {
@@ -632,10 +637,18 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
                 conexion.connect();
                 // this will be useful so that you can show a tipical 0-100% progress bar
                 int lenghtOfFile = conexion.getContentLength();
-
+                File audioFolder = new File(Environment.getExternalStorageDirectory(),
+                        "/ansys/" + book.getName_book());
+                if (!audioFolder.exists()) {
+                    boolean success = audioFolder.mkdir();
+                    if (success) {
+                        // save the file
+                    }
+                }
                 // downlod the file
                 InputStream input = new BufferedInputStream(url.openStream());
-                OutputStream output = new FileOutputStream("/ansys/" + book.getName_book());
+                OutputStream output = new FileOutputStream(audioFolder);
+
 
                 byte data[] = new byte[1024];
 
@@ -715,5 +728,25 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
 //        });
     }
 
-
+    public void downloadAudio(){
+        DownloadManager downloadmanager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri downloadUri = Uri.parse(book.getAudioUrl());
+        DownloadManager.Request request = new DownloadManager.Request(downloadUri);
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+        request.setDescription("Downloading "+book.getName_book());
+        downloadmanager.enqueue(request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |DownloadManager.Request.NETWORK_MOBILE)
+                .setAllowedOverRoaming(false)
+                .setTitle("Downloading "+book.getName_book())
+                .setDescription("Audio File Download")
+                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/ansys/" + book.getName_book()));
+        getContext().registerReceiver(onComplete, new
+                IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+    }
+    BroadcastReceiver onComplete=new BroadcastReceiver() {
+        public void onReceive(Context ctxt, Intent intent) {
+            // your code
+            if(intent!=null && ctxt!=null)
+                Toast.makeText(ctxt,  book.getName_book() + " downloaded ", Toast.LENGTH_LONG).show();
+        }
+    };
 }
