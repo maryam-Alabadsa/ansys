@@ -67,14 +67,11 @@ public class RegisterActivity extends BaseActivity {
                                 binding.progressBar.setVisibility(View.GONE);
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("createAccount", "createUserWithEmail:success");
-                                Toast.makeText(RegisterActivity.this, "createUserWithEmail:success", Toast.LENGTH_SHORT).show();
                                 currentUser = mAuth.getCurrentUser();
-                                Toast.makeText(RegisterActivity.this, currentUser.getEmail() + "", Toast.LENGTH_SHORT).show();
                                 updateProfile();
                                 getAll();
                             } else {
                                 binding.progressBar.setVisibility(View.GONE);
-
                                 // If sign in fails, display a message to the user.
                                 Log.e("createAccount", "createUserWithEmail:failure", task.getException());
                                 Toast.makeText(RegisterActivity.this, "Authentication failed."+ task.getException(),
@@ -102,7 +99,6 @@ public class RegisterActivity extends BaseActivity {
 
                         if (task.isSuccessful()) {
                             currentUser.reload();
-                            Toast.makeText(RegisterActivity.this, "Profile Update for" + currentUser.getDisplayName(), Toast.LENGTH_SHORT).show();
                         } else {
                             task.getException().printStackTrace();
                             Toast.makeText(RegisterActivity.this, task.getException().getMessage(), Toast.LENGTH_SHORT).show();

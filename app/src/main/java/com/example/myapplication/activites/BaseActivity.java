@@ -3,7 +3,6 @@ package com.example.myapplication.activites;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -56,12 +55,10 @@ public class BaseActivity extends AppCompatActivity {
                 if (!queryDocumentSnapshots.isEmpty()) {
                     for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
                         list.add(snapshot.toObject(Books.class));
-//                        Toast.makeText(BaseActivity.this, list.size()+"", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
         });
-//        Toast.makeText(this, list.size()+"", Toast.LENGTH_SHORT).show();
 
         return list.size();
     }

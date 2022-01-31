@@ -89,7 +89,6 @@ public class LoginActivity extends BaseActivity {
 
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("signIn", "signInWithEmail:success");
-                                Toast.makeText(LoginActivity.this, "signInWithEmail:success", Toast.LENGTH_SHORT).show();
                                 getAll();
                                 savePrefsData();
                             } else {
@@ -97,7 +96,6 @@ public class LoginActivity extends BaseActivity {
 
                                 // If sign in fails, display a message to the user.
                                 Log.e("signIn", "signInWithEmail:failure", task.getException());
-                                Log.e("signIn", "signInWithEmail:failure" + binding.etEmail.getText().toString());
                                 Toast.makeText(LoginActivity.this, "Authentication failed.",
                                         Toast.LENGTH_SHORT).show();
                                 Toast.makeText(LoginActivity.this, "" + task.getException(),
