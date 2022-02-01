@@ -1,13 +1,7 @@
 package com.example.myapplication.exoplayer;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.content.res.ResourcesCompat;
-
 import android.app.Notification;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -19,19 +13,18 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.res.ResourcesCompat;
+
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.bumptech.glide.Glide;
 import com.example.myapplication.R;
 import com.example.myapplication.activites.BaseActivity;
-import com.example.myapplication.activites.MainActivity;
 import com.example.myapplication.constants.Constants;
 import com.example.myapplication.databinding.ActivityExoPlayerBinding;
-import com.example.myapplication.databinding.FragmentExoPlayerBinding;
 import com.example.myapplication.models.Books;
-import com.example.myapplication.models.CompletedBooks;
 import com.example.myapplication.models.Library;
-import com.example.myapplication.models.LoadedBooks;
-import com.example.myapplication.models.UnfinishedBooks;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
@@ -51,20 +44,18 @@ import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.PlayerNotificationManager;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
+import com.google.android.exoplayer2.upstream.DataSource;
 import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.upstream.FileDataSourceFactory;
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -74,6 +65,8 @@ import static android.app.Notification.BADGE_ICON_LARGE;
 
 public class ExoPlayerActivity extends BaseActivity {
 
+    private static final int FROM_STORAGE = 1;
+    private static final int FROM_FIREBASE = 2;
     ActivityExoPlayerBinding binding;
     private Books books;
     long duration;
@@ -152,9 +145,9 @@ public class ExoPlayerActivity extends BaseActivity {
                     @Override
                     public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
                         if (documentSnapshot.exists()) {
-                            String path = Environment.getExternalStorageDirectory().getPath() + "/ansys/" + bookId;
+                            String path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/ansys/" + bookId;
                             uri2 = Uri.parse(path);
-                            playAudio();
+                            playAudio(FROM_STORAGE);
 //                            Log.e("from ExternalStorage", path);
                             Toast.makeText(ExoPlayerActivity.this, "from Download ", Toast.LENGTH_SHORT).show();
                         } else {
@@ -167,7 +160,7 @@ public class ExoPlayerActivity extends BaseActivity {
                                     uri2 = downloadUrl;
                                     Toast.makeText(ExoPlayerActivity.this, uri2 + "", Toast.LENGTH_SHORT).show();
 
-                                    playAudio();
+                                    playAudio(FROM_FIREBASE);
                                 }
                             });
 //                            Log.e("from fire store2", uri2 + "");
@@ -178,7 +171,7 @@ public class ExoPlayerActivity extends BaseActivity {
 //        return uri2;
     }
 
-    public void playAudio() {
+    public void playAudio(int fromFlag) {
         //-------------------------Initialize load control-----------------------------------------
         LoadControl loadControl = new DefaultLoadControl();
         //-------------------------Initialize band width meter -----------------------------------------
@@ -188,11 +181,13 @@ public class ExoPlayerActivity extends BaseActivity {
         //-------------------------Initialize exo Player -----------------------------------------
         simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(ExoPlayerActivity.this, trackSelector, loadControl);
         //-------------------------Initialize data  source factory -----------------------------------------
-        DefaultHttpDataSourceFactory factory = new DefaultHttpDataSourceFactory("exoPlayer_video");
+        DataSource.Factory dataSourceFactory = new FileDataSourceFactory(); //FROM_STORAGE
+        if(fromFlag==FROM_FIREBASE)
+            dataSourceFactory = new DefaultHttpDataSourceFactory("exoPlayer_video");//FROM_FIREBASE
         //-------------------------Initialize Extractors Factory -----------------------------------------
         ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
         //-------------------------Initialize Extractors Factory -----------------------------------------
-        MediaSource mediaSource = new ExtractorMediaSource(uri2, factory, extractorsFactory, null, null);
+        MediaSource mediaSource = new ExtractorMediaSource(uri2, dataSourceFactory, extractorsFactory, null, null);
         Log.e("getUri2", uri2 + "");
 
         //-----------------------------set player---------------------------------------------------------
