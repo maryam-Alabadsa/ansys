@@ -59,7 +59,6 @@ public class LoadedBooksAdapter extends RecyclerView.Adapter<LoadedBooksAdapter.
         return myViewHolder;
     }
 
-    String name;
 
     @Override
     public void onBindViewHolder(LoadedBooksAdapter.MyViewHolder holder, int position) {
@@ -68,18 +67,20 @@ public class LoadedBooksAdapter extends RecyclerView.Adapter<LoadedBooksAdapter.
                 holder.binding.tvBookName.setText(Constants.LIST.get(i).getBooks().getName_book());
                 holder.binding.tvBookWriter.setText(Constants.LIST.get(i).getBooks().getName_writer());
                 Glide.with(context).load(Constants.LIST.get(i).getBooks().getImg_uri()).into(holder.binding.imgBook);
-                name = Constants.LIST.get(i).getBooks().getName_book();
             }
         }
         holder.binding.tvTime.setText(list.get(position).getLoadedData());
         holder.binding.getRoot().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (bookLoadedInterface != null) {
-                    Toast.makeText(context, name+"   1", Toast.LENGTH_SHORT).show();
+//                if (bookLoadedInterface != null) {
+//                    for (int i = 0; i <Constants.LIST.size() ; i++) {
+//                        if (Constants.LIST.get(i).getId().equals(list.get(position).getBookId())) {
+                            bookLoadedInterface.layout(list.get(position).getBookId());
 
-                    bookLoadedInterface.layout(name);
-                }
+//                        }
+//                        }
+//                }
             }
         });
 

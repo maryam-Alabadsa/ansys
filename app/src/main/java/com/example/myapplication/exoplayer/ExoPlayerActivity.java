@@ -2,13 +2,18 @@ package com.example.myapplication.exoplayer;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.content.res.ResourcesCompat;
 
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -25,6 +30,7 @@ import com.example.myapplication.databinding.FragmentExoPlayerBinding;
 import com.example.myapplication.models.Books;
 import com.example.myapplication.models.CompletedBooks;
 import com.example.myapplication.models.Library;
+import com.example.myapplication.models.LoadedBooks;
 import com.example.myapplication.models.UnfinishedBooks;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlaybackException;
@@ -54,6 +60,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +69,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+
+import static android.app.Notification.BADGE_ICON_LARGE;
 
 public class ExoPlayerActivity extends BaseActivity {
 
@@ -89,9 +99,8 @@ public class ExoPlayerActivity extends BaseActivity {
 
         binding = ActivityExoPlayerBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        binding.tvBookDes.setText(books.getDes());
         binding.tvNameWriter.setText(books.getName_writer());
-        binding.tvNameBookInfo.setText(books.getName_book());
+        binding.tvNameBook.setText(books.getName_book());
         Glide.with(this).load(books.getImg_uri()).into(binding.imgBook);
 
         //-------------------------Make activity  full screen ------------------------------------
@@ -99,32 +108,17 @@ public class ExoPlayerActivity extends BaseActivity {
 
         //----------------------------video url ---------------------------------------------------
 //        Uri uri = Uri.parse("https://storage.googleapis.com/exoplayer-test-media-1/mp4/frame-counter-one-hour.mp4");
-        Uri uri = Uri.parse(books.getAudioUrl());
-        //-------------------------Initialize load control-----------------------------------------
-        LoadControl loadControl = new DefaultLoadControl();
-        //-------------------------Initialize band width meter -----------------------------------------
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        //-------------------------Initialize track selector -----------------------------------------
-        TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
-        //-------------------------Initialize exo Player -----------------------------------------
-        simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
-        //-------------------------Initialize data  source factory -----------------------------------------
-        DefaultHttpDataSourceFactory factory = new DefaultHttpDataSourceFactory("exoPlayer_video");
-        //-------------------------Initialize Extractors Factory -----------------------------------------
-        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        //-------------------------Initialize Extractors Factory -----------------------------------------
-        MediaSource mediaSource = new ExtractorMediaSource(uri, factory, extractorsFactory, null, null);
-        //-----------------------------set player---------------------------------------------------------
-        binding.playerView.setPlayer(simpleExoPlayer);
-        //keep screen on
-        binding.playerView.setKeepScreenOn(true);
-        //prepare media
-        simpleExoPlayer.prepare(mediaSource);
-        //play video player
-        simpleExoPlayer.setPlayWhenReady(true);
-        simpleExoPlayer.seekTo(duration);
+
+//        Uri uri= Uri.parse("https://firebasestorage.googleapis.com/v0/b/ansys-c19a7.appspot.com/o/%D8%A3%D9%86%D9%85%D8%A7%D8%B7%20%D8%A7%D9%84%D8%B4%D8%AE%D8%B5%D9%8A%D8%A9%20%D8%A7%D9%844--------%20_%20%D9%83%D8%AA%D8%A7%D8%A8%20%D9%85%D8%B9%D8%B1%D9%81%D8%A9%20%D8%A7%D9%84%D8%A5%D9%86%D8%B3%D8%A7%D9%86%20%D9%85%D9%86%20%D9%86%D8%B8%D8%B1%D8%A9%20_%D8%A3%D8%AE%D8%B6%D8%B1(MP3_128K).mp3?alt=media&token=fc7220b5-4feb-4d20-a34c-744725a6da5a");
+//        getUrlAsync();
+//        Uri uri = getUri();
+        getUri();
+        Log.e("getUri", uri2 + "");
+
 
         playerNotificationManager = PlayerNotificationManager.createWithNotificationChannel(this, "My_channel_id", R.string.channel_name, notificationId, mediaDescriptionAdapter, new PlayerNotificationManager.NotificationListener() {
+
+
             @Override
             public void onNotificationPosted(int notificationId, Notification notification, boolean ongoing) {
             }
@@ -134,28 +128,94 @@ public class ExoPlayerActivity extends BaseActivity {
             }
         });
         playerNotificationManager.setPlayer(simpleExoPlayer);
+        playerNotificationManager.setColor(ResourcesCompat.getColor(this.getResources(), R.color.colorAccent, null));
 
-        playerNotificationManager.setColor(getResources().getColor(R.color.colorPrimary));
+//        playerNotificationManager.setColor(getResources().getColor(R.color.colorPrimary));
+        playerNotificationManager.setColorized(true);
+        playerNotificationManager.setPriority(NotificationCompat.PRIORITY_HIGH);
+//        playerNotificationManager.useFastForwardAction(true);
         playerNotificationManager.setSmallIcon(R.drawable.audio_book);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            playerNotificationManager.setBadgeIconType(BADGE_ICON_LARGE);
+        }
 
 
+//        mediaDescriptionAdapter.createCurrentContentIntent(simpleExoPlayer);
+    }
 
+    Uri uri2;
+
+    private void getUri() {
+        firebaseFirestore.collection("library").document(currentUser.getUid())
+                .collection("myloadedBooks").document(bookId).get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(@NonNull DocumentSnapshot documentSnapshot) {
+                        if (documentSnapshot.exists()) {
+                            String path = Environment.getExternalStorageDirectory().getPath() + "/ansys/" + bookId;
+                            uri2 = Uri.parse(path);
+                            playAudio();
+//                            Log.e("from ExternalStorage", path);
+                            Toast.makeText(ExoPlayerActivity.this, "from Download ", Toast.LENGTH_SHORT).show();
+                        } else {
+                            StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                            StorageReference dateRef = storageRef.child("/Media" + "/" + bookId + ".mp3");
+//                            Log.e("dateRef", dateRef + "");
+                            dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri downloadUrl) {
+                                    uri2 = downloadUrl;
+                                    Toast.makeText(ExoPlayerActivity.this, uri2 + "", Toast.LENGTH_SHORT).show();
+
+                                    playAudio();
+                                }
+                            });
+//                            Log.e("from fire store2", uri2 + "");
+                        }
+                    }
+                });
+//        Log.e("get uri", uri2 + "");
+//        return uri2;
+    }
+
+    public void playAudio() {
+        //-------------------------Initialize load control-----------------------------------------
+        LoadControl loadControl = new DefaultLoadControl();
+        //-------------------------Initialize band width meter -----------------------------------------
+        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
+        //-------------------------Initialize track selector -----------------------------------------
+        TrackSelector trackSelector = new DefaultTrackSelector(new AdaptiveTrackSelection.Factory(bandwidthMeter));
+        //-------------------------Initialize exo Player -----------------------------------------
+        simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(ExoPlayerActivity.this, trackSelector, loadControl);
+        //-------------------------Initialize data  source factory -----------------------------------------
+        DefaultHttpDataSourceFactory factory = new DefaultHttpDataSourceFactory("exoPlayer_video");
+        //-------------------------Initialize Extractors Factory -----------------------------------------
+        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
+        //-------------------------Initialize Extractors Factory -----------------------------------------
+        MediaSource mediaSource = new ExtractorMediaSource(uri2, factory, extractorsFactory, null, null);
+        Log.e("getUri2", uri2 + "");
+
+        //-----------------------------set player---------------------------------------------------------
+        binding.playerView.setPlayer(simpleExoPlayer);
+        //keep screen on
+        binding.playerView.setKeepScreenOn(true);
+        //prepare media
+        simpleExoPlayer.prepare(mediaSource);
+
+        //play video player
+        simpleExoPlayer.setPlayWhenReady(true);
+        simpleExoPlayer.seekTo(duration);
         simpleExoPlayer.addListener(new Player.EventListener() {
             @Override
             public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
-
-                Log.e("timeline", "" + reason);
             }
 
             @Override
             public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
-                Log.e("onTracksChanged", "" + trackSelections);
-
             }
 
             @Override
             public void onLoadingChanged(boolean isLoading) {
-
             }
 
             @Override
@@ -206,7 +266,6 @@ public class ExoPlayerActivity extends BaseActivity {
 
             }
         });
-
     }
 
     @Override
@@ -221,34 +280,40 @@ public class ExoPlayerActivity extends BaseActivity {
 
     private PlayerNotificationManager playerNotificationManager;
     private int notificationId = 1234;
-    private PlayerNotificationManager.MediaDescriptionAdapter mediaDescriptionAdapter = new PlayerNotificationManager.MediaDescriptionAdapter() {
+    private PlayerNotificationManager.MediaDescriptionAdapter mediaDescriptionAdapter =
+            new PlayerNotificationManager.MediaDescriptionAdapter() {
 
 
-        @Override
-        public String getCurrentSubText(Player player) {
-            return  "";
-        }
+                @Override
+                public String getCurrentSubText(Player player) {
+                    return "";
+                }
 
-        @Override
-        public String getCurrentContentTitle(Player player) {
-            return books.getName_book();
-        }
+                @Override
+                public String getCurrentContentTitle(Player player) {
+                    return books.getName_book();
+                }
 
-        @Override
-        public PendingIntent createCurrentContentIntent(Player player) {
-            return null;
-        }
+                @Override
+                public PendingIntent createCurrentContentIntent(Player player) {
+                    Intent intent = new Intent(ExoPlayerActivity.this, ExoPlayerActivity.class);
+                    intent.putExtra(Constants.INTENT_KEY_ID, bookId);
+                    intent.putExtra(Constants.INTENT_KEY_DURATION, player.getCurrentPosition());
+                    PendingIntent contentPendingIntent = PendingIntent.getActivity
+                            (ExoPlayerActivity.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    return contentPendingIntent;
+                }
 
-        @Override
-        public String getCurrentContentText(Player player) {
-            return books.getName_writer();
-        }
+                @Override
+                public String getCurrentContentText(Player player) {
+                    return books.getName_writer();
+                }
 
-        @Override
-        public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
-            return null;
-        }
-    };
+                @Override
+                public Bitmap getCurrentLargeIcon(Player player, PlayerNotificationManager.BitmapCallback callback) {
+                    return null;
+                }
+            };
 
     @Override
     public void onDestroy() {
@@ -266,8 +331,6 @@ public class ExoPlayerActivity extends BaseActivity {
                 saveToLibrary();
             } else
                 Toast.makeText(this, "لتتمكن من تنزيل الكتاب ع جهازك يجب تسجيل دخول ", Toast.LENGTH_SHORT).show();
-
-            Log.e("playerNotifi onDestroy", realDurationMillis + "");
             playerNotificationManager.setPlayer(null);
         }
         if (simpleExoPlayer != null) {

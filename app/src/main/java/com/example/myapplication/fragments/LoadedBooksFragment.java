@@ -97,7 +97,7 @@ public class LoadedBooksFragment extends BaseFragment {
         adapter = new LoadedBooksAdapter(getActivity(), new BookLoadedInterface() {
             @Override
             public void layout(String bookName) {
-                Toast.makeText(getActivity(), bookName+"", Toast.LENGTH_SHORT).show();
+                EventBus.getDefault().post(new MyEventBus(Constants.FROM_BOOK_DES_TO_EXO_PLAYER, bookName, 0));
 
 //                String path= Environment.getExternalStorageDirectory().getPath()+"/ansys/" + bookName;
 //                File file=new File(path);
@@ -114,9 +114,7 @@ public class LoadedBooksFragment extends BaseFragment {
                         Log.e("addOnSuccessListener", queryDocumentSnapshots.getDocuments().toString());
                         ArrayList<LoadedBooks> list = (ArrayList<LoadedBooks>) queryDocumentSnapshots.toObjects(LoadedBooks.class);
                         progressDialog.dismiss();
-
                         adapter.setList(list);
-
                     }
                 });
     }

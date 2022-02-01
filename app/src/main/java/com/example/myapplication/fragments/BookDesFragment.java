@@ -48,6 +48,7 @@ import com.example.myapplication.adapter.Adapter_Rv_Books;
 import com.example.myapplication.constants.Constants;
 import com.example.myapplication.databinding.FragmentBookDesBinding;
 import com.example.myapplication.databinding.FragmentExploreBinding;
+import com.example.myapplication.exoplayer.ExoPlayerActivity;
 import com.example.myapplication.fav.Favorite;
 import com.example.myapplication.fav.FavoriteArray;
 import com.example.myapplication.models.Books;
@@ -65,6 +66,8 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.like.LikeButton;
 import com.like.OnAnimationEndListener;
 import com.like.OnLikeListener;
@@ -142,7 +145,7 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
         binding.heartButton.setOnLikeListener(this);
         binding.heartButton.setOnAnimationEndListener(this);
         Log.e("first id", id + "");
-        if (currentUser==null||(currentUser!=null&&currentUser.getEmail()==null)) {
+        if (currentUser == null || (currentUser != null && currentUser.getEmail() == null)) {
             binding.btn.setVisibility(View.INVISIBLE);
         }
         setData(book);
@@ -180,7 +183,7 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
             @Override
             public void onClick(View view) {
 //                Toast.makeText(getActivity(), list.get(id).getId()+"", Toast.LENGTH_SHORT).show();
-                EventBus.getDefault().post(new MyEventBus(Constants.FROM_BOOK_DES_TO_EXO_PLAYER, id,0));
+                EventBus.getDefault().post(new MyEventBus(Constants.FROM_BOOK_DES_TO_EXO_PLAYER, id, 0));
             }
         });
 
@@ -391,13 +394,11 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
                         //shown when the button is liked!
                         binding.heartButton.setLiked(true);
                         binding.heartButton.setUnlikeDrawable(new BitmapDrawable(getResources(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_heart).colorRes(android.R.color.holo_red_light).sizeDp(25).toBitmap()));
-                        Toast.makeText(getActivity(), "color", Toast.LENGTH_SHORT).show();
                         Log.e("Liked", id + "");
                     }
                 });
         binding.heartButton.setLiked(false);
 
-        Toast.makeText(getActivity(), "66", Toast.LENGTH_SHORT).show();
 
         //shown when the button is in its default state or when unLiked.
         binding.heartButton.setUnlikeDrawable(new BitmapDrawable(getResources(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_heart).colorRes(android.R.color.white).sizeDp(25).toBitmap()));
@@ -415,7 +416,6 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
                 if (item.getItemId() == R.id.Download) {
                     if (currentUser != null) {
                         downloadAudio();
-                        //new DownloadFile().execute();
                     } else
                         Toast.makeText(activity, "لتتمكن من تنزيل الكتاب ع جهازك يجب تسجيل دخول ", Toast.LENGTH_SHORT).show();
                 } else if (item.getItemId() == R.id.Share) {
@@ -599,76 +599,42 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
 //        }
 //    }
 
-    private class DownloadFile extends AsyncTask<String, Integer, String> {
-        private ProgressDialog progressDialog;
+//    Uri downloadUri;
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(getActivity());
-            progressDialog.setTitle("Download Image");
-            progressDialog.setMessage("DownLoading...");
-            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-            progressDialog.setIndeterminate(false);
-            progressDialog.show();
-        }
+    public void downloadAudio() {
+        DownloadManager downloadmanager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
+//        Uri downloadUri = Uri.parse(book.getAudioUrl());
 
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            progressDialog.setProgress(values[0]);
-        }
+        StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference dateRef = storageRef.child("/Media" + "/" + id + ".mp3");
+        Log.e("dateRef", dateRef + "");
+        dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri downloadUrl) {
+                DownloadManager.Request request = new DownloadManager.Request(downloadUrl);
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDescription("Downloading " + book.getName_book());
+                downloadmanager.enqueue(request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI | DownloadManager.Request.NETWORK_MOBILE)
+                        .setAllowedOverRoaming(false)
+                        .setTitle("Downloading " + book.getName_book())
+                        .setDescription("Audio File Download")
+                        .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/ansys/" + id));
+                getContext().registerReceiver(onComplete, new
+                        IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));            }
+        });
 
-
-        @Override
-        protected void onPostExecute(String bitmap) {
-            super.onPostExecute(bitmap);
-            Toast.makeText(getActivity(), bitmap + " downloaded ", Toast.LENGTH_LONG).show();
-            progressDialog.dismiss();
-            downloadMedia();
-        }
-
-        @Override
-        protected String doInBackground(String... urlParams) {
-            int count;
-            try {
-                URL url = new URL(book.getAudioUrl());
-                URLConnection conexion = url.openConnection();
-                conexion.connect();
-                // this will be useful so that you can show a tipical 0-100% progress bar
-                int lenghtOfFile = conexion.getContentLength();
-                File audioFolder = new File(Environment.getExternalStorageDirectory(),
-                        "/ansys/" + book.getName_book());
-                if (!audioFolder.exists()) {
-                    boolean success = audioFolder.mkdir();
-                    if (success) {
-                        // save the file
-                    }
-                }
-                // downlod the file
-                InputStream input = new BufferedInputStream(url.openStream());
-                OutputStream output = new FileOutputStream(audioFolder);
-
-
-                byte data[] = new byte[1024];
-
-                long total = 0;
-
-                while ((count = input.read(data)) != -1) {
-                    total += count;
-                    // publishing the progress....
-                    publishProgress((int) (total * 100 / lenghtOfFile));
-                    output.write(data, 0, count);
-                }
-
-                output.flush();
-                output.close();
-                input.close();
-            } catch (Exception e) {
-            }
-            return "Done";
-        }
     }
+
+    BroadcastReceiver onComplete = new BroadcastReceiver() {
+        public void onReceive(Context ctxt, Intent intent) {
+            // your code
+            if (intent != null && ctxt != null) {
+                downloadMedia();
+                Toast.makeText(ctxt, book.getName_book() + " downloaded ", Toast.LENGTH_LONG).show();
+            }
+        }
+    };
+
 
     String formattedDate;
 
@@ -728,25 +694,5 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
 //        });
     }
 
-    public void downloadAudio(){
-        DownloadManager downloadmanager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
-        Uri downloadUri = Uri.parse(book.getAudioUrl());
-        DownloadManager.Request request = new DownloadManager.Request(downloadUri);
-        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-        request.setDescription("Downloading "+book.getName_book());
-        downloadmanager.enqueue(request.setAllowedNetworkTypes(DownloadManager.Request.NETWORK_WIFI |DownloadManager.Request.NETWORK_MOBILE)
-                .setAllowedOverRoaming(false)
-                .setTitle("Downloading "+book.getName_book())
-                .setDescription("Audio File Download")
-                .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/ansys/" + book.getName_book()));
-        getContext().registerReceiver(onComplete, new
-                IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
-    }
-    BroadcastReceiver onComplete=new BroadcastReceiver() {
-        public void onReceive(Context ctxt, Intent intent) {
-            // your code
-            if(intent!=null && ctxt!=null)
-                Toast.makeText(ctxt,  book.getName_book() + " downloaded ", Toast.LENGTH_LONG).show();
-        }
-    };
+
 }
