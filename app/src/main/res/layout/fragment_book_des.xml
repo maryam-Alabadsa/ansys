@@ -47,7 +47,7 @@
                 android:layout_marginLeft="@dimen/margin_top_24"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:icon_size="22dp"
+                app:icon_size="12dp"
                 app:icon_type="heart"
                 tools:ignore="MissingClass" />
             <ImageButton

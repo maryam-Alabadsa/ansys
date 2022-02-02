@@ -144,14 +144,11 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
         View view = binding.getRoot();
         binding.heartButton.setOnLikeListener(this);
         binding.heartButton.setOnAnimationEndListener(this);
-        Log.e("first id", id + "");
         if (currentUser == null || (currentUser != null && currentUser.getEmail() == null)) {
             binding.btn.setVisibility(View.INVISIBLE);
         }
         setData(book);
-//        changeFavColor(id);
 
-//        Toast.makeText(getActivity(), "Constants.LIST.size() = " + list.size(), Toast.LENGTH_SHORT).show();
         binding.btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,8 +184,6 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
             }
         });
 
-        favoriteArray = new ArrayList<>();
-
         return view;
     }
 
@@ -215,14 +210,11 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
 
         if (Constants.LIST != null) {
             for (int i = 0; i < Constants.LIST.size(); i++) {
-                Log.e("Next Loop1", i + "");
                 if (Constants.LIST.get(i).getId().equals(id)) {
                     for (int j = i + 1; j < Constants.LIST.size(); j++) {
-                        Log.e("next old book name ", book.getName_book());
                         if (Constants.LIST.get(j).getBooks().getMost_listened() == cat) {
                             book = Constants.LIST.get(j).getBooks();
                             id = Constants.LIST.get(j).getId();
-                            Log.e("next new book name", book.getName_book());
                             break;
                         }
                     }
@@ -236,14 +228,11 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
         if (Constants.LIST != null) {
             for (int i = 0; i < Constants.LIST.size(); i++) {
                 if (Constants.LIST.get(i).getId().equals(id)) {
-                    Log.e(" pre pre old book name ", book.getName_book());
 
                     for (int j = i - 1; j >= 0; j--) {
-                        Log.e(" pre old book name ", book.getName_book());
                         if (Constants.LIST.get(j).getBooks().getMost_listened() == cat) {
                             book = Constants.LIST.get(j).getBooks();
                             id = Constants.LIST.get(j).getId();
-                            Log.e(" pre new book name", book.getName_book());
                             break;
                         }
                     }
@@ -264,65 +253,6 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
 
 //----------------------------------------------------------------------------------------
 
-    Favorite favorite;
-
-    ArrayList<FavoriteArray> favoriteArray;
-
-    private void createFavs() {
-        CollectionReference questionRef = firebaseFirestore.collection("fav");
-        questionRef
-                .whereEqualTo("userId", currentUser.getUid())
-                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-                if (!queryDocumentSnapshots.isEmpty()) {
-                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
-                        favorite = snapshot.toObject(Favorite.class);
-                    }
-                    if (findId(favorite.getList())) {
-
-                        deleteFromFavs();
-                    } else {
-                        addToFavs();
-                    }
-                } else {
-                    ArrayList<FavoriteArray> favoriteArrays = new ArrayList<>();
-                    favoriteArrays.add(new FavoriteArray(id));
-                    Favorite favorite = new Favorite(currentUser.getUid(), favoriteArrays);
-                    firebaseFirestore.collection("fav").document(currentUser.getUid()).set(favorite);
-                }
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Toast.makeText(getActivity(), "onFailure", Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-
-//        FavoriteArray favoriteArray=new FavoriteArray(id);
-//
-//      DocumentReference documentReference = firebaseFirestore.collection("Fav")
-//                        .document(currentUser.getUid())
-//                        .collection("myBooks").document(id);
-//                documentReference.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
-//                    @Override
-//                    public void onSuccess(Void aVoid) {
-//                        Toast.makeText(getActivity(), "This note is Delete", Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                }).addOnFailureListener(new OnFailureListener() {
-//                    @Override
-//                    public void onFailure(@NonNull Exception e) {
-//                        Toast.makeText(getActivity(), "Failed To Delete", Toast.LENGTH_SHORT).show();
-//                    }
-//                });
-//
-
-
-    }
 
     private void addToFavs() {
 
@@ -338,17 +268,10 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
                         }
                     }
                 });
-
-//        favoriteArray = favorite.getList();
-//        favoriteArray.add(new FavoriteArray(id));
-//        Favorite favorite = new Favorite(currentUser.getUid(), favoriteArray);
-//        firebaseFirestore.collection("fav").document(favorite.getUserId()).set(favorite);
-//        Toast.makeText(getActivity(), "تمت الاضافة الى المفضلة ", Toast.LENGTH_SHORT).show();
     }
 
     private void deleteFromFavs() {
 
-        FavoriteArray favoriteArray = new FavoriteArray(id);
         firebaseFirestore.collection("Fav").document(currentUser.getUid())
                 .collection("myBooks").document(id).delete()
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -361,27 +284,8 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
                     }
                 });
 
-//        for (int i = 0; i < favoriteArray.size(); i++) {
-//            if (favoriteArray.get(i).getBookId().equals(id)) {
-//                favoriteArray.remove(i);
-//                Favorite favorite = new Favorite(currentUser.getUid(), favoriteArray);
-//                firebaseFirestore.collection("fav").document(favorite.getUserId()).set(favorite);
-//                Toast.makeText(getActivity(), "تم الازالة من المفضلة ", Toast.LENGTH_SHORT).show();
-//                break;
-//            }
-//        }
     }
 
-
-    private Boolean findId(ArrayList<FavoriteArray> a) {
-//        a = favorite.getList();
-        for (int i = 0; i < a.size(); i++) {
-            if (a.get(i).getBookId().equals(id)) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     private void changeFavColor(String id) {
 
@@ -394,11 +298,9 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
                         //shown when the button is liked!
                         binding.heartButton.setLiked(true);
                         binding.heartButton.setUnlikeDrawable(new BitmapDrawable(getResources(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_heart).colorRes(android.R.color.holo_red_light).sizeDp(25).toBitmap()));
-                        Log.e("Liked", id + "");
                     }
                 });
         binding.heartButton.setLiked(false);
-
 
         //shown when the button is in its default state or when unLiked.
         binding.heartButton.setUnlikeDrawable(new BitmapDrawable(getResources(), new IconicsDrawable(getActivity(), CommunityMaterial.Icon.cmd_heart).colorRes(android.R.color.white).sizeDp(25).toBitmap()));
@@ -466,140 +368,7 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
     }
 
 
-//    public class MyAsnyc extends AsyncTask<Void, Void, Void> {
-//        public File file;
-//        InputStream is;
-//
-//        protected void doInBackground() throws IOException {
-//
-//            File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-//            file = new File(path, "DemoPicture.jpg");
-//            try {
-//                // Make sure the Pictures directory exists.
-//                path.mkdirs();
-//
-//                URL url = new URL(book.getAudioUrl());
-//                /* Open a connection to that URL. */
-//                URLConnection ucon = url.openConnection();
-//
-//                is = ucon.getInputStream();
-//
-//                OutputStream os = new FileOutputStream(file);
-//                byte[] data = new byte[is.available()];
-//                is.read(data);
-//                os.write(data);
-//                is.close();
-//                os.close();
-//
-//            } catch (IOException e) {
-//                Log.d("ImageManager", "Error: " + e);
-//            }
-//        }
-//
-//        @Override
-//        protected Void doInBackground(Void... params) {
-//            // TODO Auto-generated method stub
-//            try {
-//                doInBackground();
-//            } catch (IOException e) {
-//                // TODO Auto-generated catch block
-//                e.printStackTrace();
-//            }
-//
-//            return null;
-//        }
-//
-//        protected void onPostExecute() {
-//            // Tell the media scanner about the new file so that it is
-//            // immediately available to the user.
-//            MediaScannerConnection.scanFile(null,
-//                    new String[]{file.toString()}, null,
-//                    new MediaScannerConnection.OnScanCompletedListener() {
-//                        public void onScanCompleted(String path, Uri uri) {
-//                            Log.i("ExternalStorage", "Scanned " + path + ":");
-//                            Log.i("ExternalStorage", "-> uri=" + uri);
-//                        }
-//                    });
-//            Toast.makeText(activity, "ppp", Toast.LENGTH_SHORT).show();
-//
-//        }
-//    }
 
-//    private String imageName = "book.getName_book()";
-
-//    private class saveMedia extends AsyncTask<String, Integer, String> {
-//
-//        private ProgressDialog progressDialog;
-//        private HttpURLConnection httpURLConnection;
-//        private InputStream inputStream;
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//
-//            progressDialog = new ProgressDialog(getActivity());
-//            progressDialog.setTitle("Download Image");
-//            progressDialog.setMessage("DownLoading...");
-//            progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-//            progressDialog.setIndeterminate(false);
-//            progressDialog.show();
-//        }
-//
-//        @Override
-//        protected String doInBackground(String... strings) {
-//            Bitmap bitmap = null;
-//            try {
-//                URL url = new URL(book.getAudioUrl());
-//                httpURLConnection = (HttpURLConnection) url.openConnection();
-//                httpURLConnection.connect();
-//                inputStream = httpURLConnection.getInputStream();
-//                OutputStream outputStream = new FileOutputStream(Environment.getExternalStorageDirectory() + "/" + book.getName_book());
-//                int lengthOfFile = httpURLConnection.getContentLength();
-//                int count = 0;
-//                byte date[] = new byte[1024];
-//                long total = 0;
-//                while ((count = inputStream.read(date)) != -1) {
-//                    total += count;
-//                    publishProgress((int) (total * 100 / lengthOfFile));
-//                    outputStream.write(date, 0, count);
-//                }
-//                outputStream.flush();
-//                outputStream.close();
-//                inputStream.close();
-//
-//            } catch (MalformedURLException e) {
-//                e.printStackTrace();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            } finally {
-//                try {
-//                    if (inputStream != null)
-//                        inputStream.close();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//                httpURLConnection.disconnect();
-//            }
-//            return imageName;
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(Integer... values) {
-//            super.onProgressUpdate(values);
-//            progressDialog.setProgress(values[0]);
-//        }
-//
-//
-//        @Override
-//        protected void onPostExecute(String bitmap) {
-//            super.onPostExecute(bitmap);
-//            Toast.makeText(getActivity(), bitmap + " downloaded ", Toast.LENGTH_LONG).show();
-//            progressDialog.dismiss();
-//            downloadMedia();
-//        }
-//    }
-
-//    Uri downloadUri;
 
     public void downloadAudio() {
         DownloadManager downloadmanager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
@@ -607,7 +376,6 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
 
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference dateRef = storageRef.child("/Media" + "/" + id + ".mp3");
-        Log.e("dateRef", dateRef + "");
         dateRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
             @Override
             public void onSuccess(Uri downloadUrl) {
