@@ -50,7 +50,7 @@ public class SplashActivity extends BaseActivity {
         Log.e("onCreate splash ", "onCreate");
 
         if (currentUser != null) {
-            getAll();
+            getAllSplash();
         } else {
             Intent intent = new Intent(this, IntroActivity.class);
             intent.putExtra(Constants.INTENT_KEY, Constants.FROM_FRAGMENT_DES_TO_INTRO);

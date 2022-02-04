@@ -61,7 +61,7 @@
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="الاستماع له حاليا" />
+                android:text="الكتب الغير منجزة" />
 
             <TextView
                 android:id="@+id/item3"

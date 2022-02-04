@@ -17,7 +17,7 @@
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="250dp"
+                android:layout_width="wrap_content"
                 android:layout_height="300dp"
                 android:scaleType="fitXY"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -26,16 +26,19 @@
 
             <TextView
                 android:id="@+id/tv_name_book_info"
-                android:layout_width="120dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_top_24"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="16dp"
                 android:fontFamily="@font/abu_dhabi"
                 android:text="TextView"
+                android:textAlignment="center"
                 android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/margin_top_24"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/btn"
+                app:layout_constraintStart_toEndOf="@id/heart_button"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <com.like.LikeButton
@@ -47,14 +50,15 @@
                 android:layout_marginLeft="@dimen/margin_top_24"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:icon_size="12dp"
+                app:icon_size="8dp"
                 app:icon_type="heart"
                 tools:ignore="MissingClass" />
+
             <ImageButton
                 android:id="@+id/btn"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginRight="24dp"
                 android:background="@color/primary_light"
                 android:scaleType="fitXY"
@@ -64,8 +68,8 @@
 
             <ImageView
                 android:id="@+id/img_book"
-                android:layout_width="171dp"
-                android:layout_height="220dp"
+                android:layout_width="167dp"
+                android:layout_height="205dp"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_alignParentEnd="true"
@@ -117,7 +121,7 @@
                         android:id="@+id/linear_about"
                         android:layout_width="350dp"
                         android:layout_height="250dp"
-                        android:layout_marginTop="@dimen/margin_top_24"
+                        android:layout_marginTop="30dp"
                         android:background="@color/white"
                         android:orientation="vertical"
                         app:layout_constraintLeft_toLeftOf="parent"

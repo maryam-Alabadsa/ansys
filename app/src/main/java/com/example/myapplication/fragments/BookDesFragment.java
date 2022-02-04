@@ -243,11 +243,13 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
     }
 
     private void setData(Books book) {
-        binding.tvNameWriter.setText(book.getName_writer());
-        binding.tvNameBookInfo.setText(book.getName_book());
-        binding.tvBookDes.setText(book.getDes());
-        Glide.with(getActivity()).load(book.getImg_uri()).into(binding.imgBook);
-        changeFavColor(id);
+        if (book != null) {
+            binding.tvNameWriter.setText(book.getName_writer());
+            binding.tvNameBookInfo.setText(book.getName_book());
+            binding.tvBookDes.setText(book.getDes());
+            Glide.with(getActivity()).load(book.getImg_uri()).into(binding.imgBook);
+            changeFavColor(id);
+        }
     }
 
 
@@ -368,8 +370,6 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
     }
 
 
-
-
     public void downloadAudio() {
         DownloadManager downloadmanager = (DownloadManager) getActivity().getSystemService(Context.DOWNLOAD_SERVICE);
 //        Uri downloadUri = Uri.parse(book.getAudioUrl());
@@ -388,7 +388,8 @@ public class BookDesFragment extends BaseFragment implements OnLikeListener,
                         .setDescription("Audio File Download")
                         .setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "/ansys/" + id));
                 getContext().registerReceiver(onComplete, new
-                        IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));            }
+                        IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+            }
         });
 
     }

@@ -21,10 +21,9 @@
         <service
             android:name=".exoplayer.MyService"
             android:enabled="true"
-            android:exported="true"
-            />
+            android:exported="true" />
 
-        <activity android:name=".exoplayer.ExoPlayerActivity" />
+        <activity android:name=".exoplayer.ExoPlayerActivity" android:launchMode="singleTop"/>
         <activity
             android:name=".activites.TermsConditionsActivity"
             android:screenOrientation="locked" />
@@ -49,7 +48,6 @@
         <activity
             android:name=".activites.MainActivity"
             android:screenOrientation="locked" />
-
     </application>
 
 </manifest>

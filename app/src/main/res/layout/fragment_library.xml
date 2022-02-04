@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/primary_light"
     tools:context=".fragments.LibraryFragment">
 
 
@@ -60,6 +61,7 @@
         android:id="@+id/conteiner2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/primary_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

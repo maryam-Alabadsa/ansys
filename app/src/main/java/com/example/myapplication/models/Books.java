@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Books
-//        implements Parcelable
+        implements Parcelable
 {
     private String img_uri, name_book, name_writer, Des,AudioUrl;
     Boolean most_listened;
@@ -21,6 +21,18 @@ public class Books
         AudioUrl = audioUrl;
         this.most_listened = most_listened;
     }
+
+    public static final Creator<Books> CREATOR = new Creator<Books>() {
+        @Override
+        public Books createFromParcel(Parcel in) {
+            return new Books(in);
+        }
+
+        @Override
+        public Books[] newArray(int size) {
+            return new Books[size];
+        }
+    };
 
     public String getAudioUrl() {
         return AudioUrl;
@@ -79,4 +91,18 @@ public class Books
         this.most_listened = most_listened;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(img_uri);
+        parcel.writeString(name_book);
+        parcel.writeString(name_writer);
+        parcel.writeString(Des);
+        parcel.writeString(AudioUrl);
+        parcel.writeByte((byte) (most_listened == null ? 0 : most_listened ? 1 : 2));
+    }
 }

@@ -3,6 +3,7 @@ package com.example.myapplication.activites;
 import androidx.annotation.NonNull;
 import androidx.core.view.GravityCompat;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,7 +33,10 @@ public class RegisterActivity extends BaseActivity {
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                binding.progressBar.setVisibility(View.VISIBLE);
+                progressDialog = new ProgressDialog(RegisterActivity.this);
+                progressDialog.setMessage("Please Wait");
+                progressDialog.setCancelable(false);
+                progressDialog.show();
                 String email = binding.etEmail.getText().toString();
                 String password = binding.etPassword.getText().toString();
                 createAccount(email, password);
@@ -64,7 +68,6 @@ public class RegisterActivity extends BaseActivity {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
-                                binding.progressBar.setVisibility(View.GONE);
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("createAccount", "createUserWithEmail:success");
                                 currentUser = mAuth.getCurrentUser();

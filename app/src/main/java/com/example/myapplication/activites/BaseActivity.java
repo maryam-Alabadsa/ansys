@@ -1,8 +1,11 @@
 package com.example.myapplication.activites;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -27,6 +30,7 @@ public class BaseActivity extends AppCompatActivity {
     public FirebaseUser currentUser;
     public FirebaseStorage firebaseStorage;
    public FirebaseFirestore firebaseFirestore;
+    public ProgressDialog progressDialog;
 
 
     @Override
@@ -74,7 +78,29 @@ public class BaseActivity extends AppCompatActivity {
         editor.putBoolean("isIntroOpened", true);
         editor.apply();
     }
+
     public void getAll() {
+        ArrayList<Books> list = new ArrayList<>();
+
+        CollectionReference questionRef = firebaseFirestore.collection("Books");
+        questionRef
+
+                .get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                if (!queryDocumentSnapshots.isEmpty()) {
+                    for (DocumentSnapshot snapshot : queryDocumentSnapshots) {
+                        list.add(snapshot.toObject(Books.class));
+                        Constants.LIST.add(new ConstantsList(snapshot.getReference().getId(), snapshot.toObject(Books.class)));
+                        progressDialog.dismiss();
+                    }
+                }
+                goToNext();
+            }
+        });
+    }
+    public void getAllSplash() {
         ArrayList<Books> list = new ArrayList<>();
 
         CollectionReference questionRef = firebaseFirestore.collection("Books");
